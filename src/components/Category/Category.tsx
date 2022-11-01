@@ -10,6 +10,8 @@ export const Container = styled.menu`
   padding: 0 12px;
   height: 40px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.black};
+  overflow: auto;
+  white-space: nowrap;
 `;
 
 const CATEGORY_LIST: Array<TCategory> = ["전체", "대형", "중형", "소형"];
