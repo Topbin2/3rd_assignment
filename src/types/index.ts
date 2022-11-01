@@ -1,1 +1,1 @@
-export {};
+export * from "./styled-components";
