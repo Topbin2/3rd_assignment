@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { getCarList } from "../../apis";
@@ -17,6 +18,7 @@ export const MessageContainer = styled.div`
 `;
 
 const CarList = () => {
+  const navigate = useNavigate();
   const [sortOption, setSortOption] = useState<TCategory>("전체");
   const { data, isLoading } = useQuery({
     queryKey: ["cars", sortOption],
@@ -46,6 +48,12 @@ const CarList = () => {
               imgUrl={imageUrl}
               amount={amount}
               createdAt={createdAt}
+              onClick={() =>
+                navigate({
+                  pathname: "/car",
+                  search: `?brand=${brand}&name=${name}&segment=${segment}&fuelType=${fuelType}`,
+                })
+              }
             />
           );
         })}

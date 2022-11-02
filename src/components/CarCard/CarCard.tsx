@@ -11,13 +11,15 @@ interface Props {
   amount: number;
   createdAt: string;
   imgUrl: string;
+  onClick: () => void;
 }
 
 const CarCard = (props: Props) => {
-  const { brand, name, segment, fuelType, amount, createdAt, imgUrl } = props;
+  const { brand, name, segment, fuelType, amount, createdAt, imgUrl, onClick } =
+    props;
 
   return (
-    <S.Container>
+    <S.Container onClick={onClick}>
       <S.Infos>
         <S.MainInfo>
           <span>{brand}</span>
