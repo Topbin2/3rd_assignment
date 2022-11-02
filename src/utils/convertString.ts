@@ -1,4 +1,4 @@
-import { TCategory, TSegment } from "../types";
+import { TCategory, TFuelType, TSegment } from "../types";
 
 export const converSegmentToCategory = (segment: TSegment) => {
   switch (segment) {
@@ -29,5 +29,18 @@ export const convertCategoryToSegment = (category: TCategory) => {
       return "SUV";
     default:
       throw new Error("segment 타입을 확인해주세요.");
+  }
+};
+
+export const convertFuelTypeToString = (fuelType: TFuelType) => {
+  switch (fuelType) {
+    case "gasoline":
+      return "가솔린";
+    case "hybrid":
+      return "하이브리드";
+    case "ev":
+      return "전기";
+    default:
+      throw new Error("fuelType을 확인해주세요.");
   }
 };
