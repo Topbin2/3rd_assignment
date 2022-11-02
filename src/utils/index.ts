@@ -1,4 +1,4 @@
 export * from "./axiosInstance";
 export * from "./convertString";
-export * from "./dateCalculation";
+export * from "./dateFormat";
 export * from "./setCommas";
