@@ -13,6 +13,10 @@ export const useGetCarDetail = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["car-detail", brand, name, segment, fuelType],
     queryFn: () => getCarDetail({ brand, name, segment, fuelType }),
+    retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    staleTime: 60 * 1000 * 5, // 5 minutes
   });
 
   return { data, isLoading };
