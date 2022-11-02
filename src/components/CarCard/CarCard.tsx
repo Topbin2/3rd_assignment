@@ -1,5 +1,10 @@
 import { TFuelType, TSegment } from "../../types";
-import { dateCalculation } from "../../utils";
+import {
+  converSegmentToCategory,
+  convertFuelTypeToString,
+  dateCalculation,
+  setCommas,
+} from "../../utils";
 import { NewButton } from "../Buttons";
 import * as S from "./CarCard.style";
 
@@ -27,9 +32,10 @@ const CarCard = (props: Props) => {
         </S.MainInfo>
         <S.SubInfo>
           <span>
-            {segment} / {fuelType}
+            {converSegmentToCategory(segment)} /{" "}
+            {convertFuelTypeToString(fuelType)}
           </span>
-          <span>월 {amount} 원 부터</span>
+          <span>월 {setCommas(amount)} 원 부터</span>
         </S.SubInfo>
       </S.Infos>
       <S.ImgContainer>
