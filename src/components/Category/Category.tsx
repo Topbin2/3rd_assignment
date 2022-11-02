@@ -14,7 +14,7 @@ export const Container = styled.menu`
   white-space: nowrap;
 `;
 
-const CATEGORY_LIST: Array<TCategory> = ["전체", "대형", "중형", "소형"];
+const CATEGORY_LIST: Array<TCategory> = ["전체", "대형", "중형", "소형", "SUV"];
 
 interface Props {
   sortOption: string;
