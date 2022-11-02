@@ -1,8 +1,6 @@
+import { TFuelType, TSegment } from "../../types";
 import { NewButton } from "../Buttons";
 import * as S from "./CarCard.style";
-
-type TSegment = "C" | "D" | "E" | "SUV";
-type TFuelType = "gasoline" | "ev" | "hybrid";
 
 interface Props {
   brand: string;
