@@ -19,7 +19,7 @@ interface Props {
 }
 
 const BlueBox = ({ title }: Props) => {
-  return <Container>차량 정보</Container>;
+  return <Container>{title}</Container>;
 };
 
 export default BlueBox;
