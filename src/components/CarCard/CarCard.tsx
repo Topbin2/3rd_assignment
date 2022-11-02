@@ -1,4 +1,5 @@
 import { TFuelType, TSegment } from "../../types";
+import { dateCalculation } from "../../utils";
 import { NewButton } from "../Buttons";
 import * as S from "./CarCard.style";
 
@@ -31,7 +32,7 @@ const CarCard = (props: Props) => {
       </S.Infos>
       <S.ImgContainer>
         <img src={imgUrl} alt={brand + name} />
-        <NewButton />
+        {dateCalculation(new Date(createdAt)) && <NewButton />}
       </S.ImgContainer>
     </S.Container>
   );
