@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +16,10 @@ export const useGetCarList = () => {
     queryKey: ["cars", sortOption],
     queryFn: () =>
       getCarList({ segment: convertCategoryToSegment(sortOption) }),
+    onError: (error) => alert(error),
+    retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   return { navigate, sortOption, setSortOption, data, isLoading };

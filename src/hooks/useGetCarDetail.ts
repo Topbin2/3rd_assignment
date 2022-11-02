@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 
@@ -13,6 +14,7 @@ export const useGetCarDetail = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["car-detail", brand, name, segment, fuelType],
     queryFn: () => getCarDetail({ brand, name, segment, fuelType }),
+    onError: (error) => alert(error),
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
