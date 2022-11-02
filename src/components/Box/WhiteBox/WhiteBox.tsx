@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { setCommas } from "../../../utils";
+
 export const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -19,14 +21,14 @@ export const Container = styled.div`
 
 interface Props {
   title: string;
-  value: string;
+  value: string | number;
 }
 
 const WhiteBox = ({ title, value }: Props) => {
   return (
     <Container>
       <strong>{title}</strong>
-      <span>{value}</span>
+      <span>{typeof value === "number" ? setCommas(value) : value}</span>
     </Container>
   );
 };
