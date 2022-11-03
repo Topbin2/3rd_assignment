@@ -28,7 +28,9 @@ const WhiteBox = ({ title, value }: Props) => {
   return (
     <Container>
       <strong>{title}</strong>
-      <span>{typeof value === "number" ? setCommas(value) : value}</span>
+      <span>
+        {typeof value === "number" ? `월 ${setCommas(value)} 원` : value}
+      </span>
     </Container>
   );
 };
