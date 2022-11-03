@@ -1,46 +1,131 @@
-# Getting Started with Create React App
+### 자주 사용하는 css의 경우 themeProvider를 통해 전역 관리
+- d.ts 파일을 통해 자동 완성 기능 부여
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```typescript
+export const theme: DefaultTheme = {
+  colors: {
+    white: "#ffffff",
+    black: "#000000",
+    gray: "#D9D9D9",
+    blue: "#0094FF",
+  },
+  fontSize: {
+    small: "12px",
+    medium: "14px",
+    large: "17px",
+    xLarge: "21px",
+  },
+};
 
-## Available Scripts
+declare module "styled-components" {
+  export interface DefaultTheme {
+    colors: {
+      white: string;
+      black: string;
+      gray: string;
+      blue: string;
+    };
+    fontSize: {
+      small: string;
+      medium: string;
+      large: string;
+      xLarge: string;
+    };
+  }
+}
 
-In the project directory, you can run:
+root.render(
+      <ThemeProvider theme={theme}>
+          <App />
+      </ThemeProvider>
+);
+```
 
-### `npm start`
+### 전체 차량 페이지
+- `react-query` `custom hook`을 활용하여 컴포넌트와 서버 상태 분리
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```typescript
+// custom hook
+const useGetCarList = () => {
+  const [sortOption, setSortOption] = useState<TCategory>("전체");
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+  const { data, isLoading } = useQuery({
+    queryKey: ["cars", sortOption],
+    queryFn: () =>
+      getCarList({ segment: convertCategoryToSegment(sortOption) }),
+    onError: (error) => alert(error),
+    retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 
-### `npm test`
+  return { sortOption, setSortOption, data, isLoading };
+};
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```jsx
+// CarList.tsx
+const CarList = () => {
+  const { sortOption, setSortOption, data, isLoading } = useGetCarList();
 
-### `npm run build`
+  return (
+    <>
+      <Header title="전체차량" isPrevButton={false} />
+      <Category sortOption={sortOption} changeSortOption={setSortOption} />
+      <ul>
+        {isLoading && <MessageContainer>불러오는 중</MessageContainer>}
+        {data && !data.length && (
+          <MessageContainer>차량이 없습니다.</MessageContainer>
+        )}
+        {data &&
+          data.map((car) => {
+            const { id, attribute, amount, createdAt } = car;
+            const { name, brand, segment, fuelType, imageUrl } = attribute;
+            return (
+              <CarCard
+                key={id}
+                name={name}
+                brand={brand}
+                segment={segment}
+                fuelType={fuelType}
+                imgUrl={imageUrl}
+                amount={amount}
+                createdAt={createdAt}
+              />
+            );
+          })}
+      </ul>
+    </>
+  );
+};
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 차량 상세 페이지
+- 유저 인터랙션이 없는 정적 페이지 -> `react-query` `staleTime` 활용하여 캐싱 (사용자 경험 향상, 서버 부담 낮춤)
+- `searchParams` 활용하여 `brand` `name` `segment` `fuelType` 에 해당하는 차량 불러옴
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```typescript
+// custom hook
+const useGetCarDetail = () => {
+  const [searchParams] = useSearchParams();
+  const brand = searchParams.get("brand") || "";
+  const name = searchParams.get("name") || "";
+  const segment = searchParams.get("segment") || "";
+  const fuelType = searchParams.get("fuelType") || "";
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  const { data, isLoading } = useQuery({
+    queryKey: ["car-detail", brand, name, segment, fuelType],
+    queryFn: () => getCarDetail({ brand, name, segment, fuelType }),
+    onError: (error) => alert(error),
+    retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    staleTime: 60 * 1000 * 5, // 5 minutes
+  });
 
-### `npm run eject`
+  return { data, isLoading };
+};
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 공통 유틸 함수 분리
+- `segment`의 경우 
