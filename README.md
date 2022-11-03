@@ -1,3 +1,5 @@
+배포 링크 https://3rd-assignment.vercel.app/
+
 ### 자주 사용하는 css의 경우 themeProvider를 통해 전역 관리
 - d.ts 파일을 통해 자동 완성 기능 부여
 
@@ -128,4 +130,49 @@ const useGetCarDetail = () => {
 ```
 
 ### 공통 유틸 함수 분리
-- `segment`의 경우 
+- `segment`의 경우 `D` `C` `E` 형식의 데이터 포맷을 `대형` `중형` `소형` 으로 변경
+- `date`의 경우 하루 전 날짜 계산, 요일 변경 등의 포맷 작업이 필요함
+
+```typescript
+const converSegmentToCategory = (segment: TSegment) => {
+  switch (segment) {
+    case "C":
+      return "소형";
+    case "D":
+      return "중형";
+    case "E":
+      return "대형";
+    case "SUV":
+      return "SUV";
+    default:
+      throw new Error("segment 타입을 확인해주세요.");
+  }
+};
+
+const dateCalculation = (createdAt: Date) => {
+  const today = new Date();
+  const yesterday = today.setDate(today.getDate() - 1);
+
+  return yesterday - Number(createdAt) < 0;
+};
+
+const dateFormat = (startedAt: string) => {
+  const convertStringToDate = new Date(startedAt);
+
+  const week = ["일", "월", "화", "수", "목", "금", "토"];
+
+  const month = convertStringToDate.getMonth();
+  const day = convertStringToDate.getDate();
+  const dayOfWeek = week[convertStringToDate.getDay()];
+
+  return `${month}월 ${day}일 (${dayOfWeek}) 부터`;
+};
+```
+### 카카오톡, 페이스북 링크 공유 시 미리보기
+- `index.html` `meta` 태그 활용
+
+```html
+  <meta name="title" property="og:title" content="현대 아이오닉5" />
+  <meta name="description" property="og:description" content="월 600,000원" />
+  <meta name="image" property="og:image" content="https://interview.platdev.net/ioniq5.png" />
+```
