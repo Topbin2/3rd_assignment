@@ -1,7 +1,5 @@
 /* eslint-disable react/no-array-index-key */
 
-import { useEffect } from "react";
-
 import { Header } from "../../components";
 import { BlueBox, WhiteBox } from "../../components/Box";
 import { useGetCarDetail } from "../../hooks";
@@ -10,22 +8,11 @@ import {
   convertFuelTypeToString,
   dateFormat,
   setCommas,
-  setMetaTags,
 } from "../../utils";
 import * as S from "./CarDetail.style";
 
 const CarDetail = () => {
   const { data, isLoading } = useGetCarDetail();
-
-  useEffect(() => {
-    if (data) {
-      setMetaTags({
-        title: data.attribute.brand + data.attribute.name,
-        description: `월 ${setCommas(data.amount)} 원`,
-        imageUrl: data.attribute.imageUrl,
-      });
-    }
-  }, [data]);
 
   return (
     <>
