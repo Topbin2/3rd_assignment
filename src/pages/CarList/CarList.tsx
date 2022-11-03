@@ -3,8 +3,7 @@ import { useGetCarList } from "../../hooks/useGetCarList";
 import { MessageContainer } from "../CarDetail/CarDetail.style";
 
 const CarList = () => {
-  const { navigate, sortOption, setSortOption, data, isLoading } =
-    useGetCarList();
+  const { sortOption, setSortOption, data, isLoading } = useGetCarList();
 
   return (
     <>
@@ -29,12 +28,6 @@ const CarList = () => {
                 imgUrl={imageUrl}
                 amount={amount}
                 createdAt={createdAt}
-                onClick={() =>
-                  navigate({
-                    pathname: "/car",
-                    search: `?brand=${brand}&name=${name}&segment=${segment}&fuelType=${fuelType}`,
-                  })
-                }
               />
             );
           })}

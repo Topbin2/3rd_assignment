@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { TFuelType, TSegment } from "../../types";
 import {
   converSegmentToCategory,
@@ -16,15 +18,21 @@ interface Props {
   amount: number;
   createdAt: string;
   imgUrl: string;
-  onClick: () => void;
 }
 
 const CarCard = (props: Props) => {
-  const { brand, name, segment, fuelType, amount, createdAt, imgUrl, onClick } =
-    props;
+  const navigate = useNavigate();
+  const { brand, name, segment, fuelType, amount, createdAt, imgUrl } = props;
 
   return (
-    <S.Container onClick={onClick}>
+    <S.Container
+      onClick={() =>
+        navigate({
+          pathname: "/car",
+          search: `?brand=${brand}&name=${name}&segment=${segment}&fuelType=${fuelType}`,
+        })
+      }
+    >
       <S.Infos>
         <S.MainInfo>
           <span>{brand}</span>
